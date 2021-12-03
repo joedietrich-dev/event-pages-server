@@ -4,4 +4,6 @@ class Panel < ActiveRecord::Base
   has_many :panelists, through: :panel_panelists
   has_many :panel_sponsors
   has_many :sponsors, through: :panel_sponsors
+  
+  validates :title, presence: true
 end

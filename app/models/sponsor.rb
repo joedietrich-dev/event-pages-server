@@ -4,4 +4,6 @@ class Sponsor < ActiveRecord::Base
   has_many :events, through: :event_sponsors
   has_many :panel_sponsors
   has_many :panels, through: :panel_sponsors
+  
+  validates :name, presence: true
 end
