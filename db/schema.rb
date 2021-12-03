@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_02_021121) do
+ActiveRecord::Schema.define(version: 2021_12_03_034930) do
 
   create_table "event_sponsor_levels", force: :cascade do |t|
     t.string "name", null: false
@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 2021_12_02_021121) do
   end
 
   create_table "honorees", force: :cascade do |t|
-    t.string "honor"
-    t.string "name"
+    t.string "honor", null: false
+    t.string "name", null: false
     t.string "descriptor"
     t.string "bio"
     t.string "img_src"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 2021_12_02_021121) do
     t.integer "panelist_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_moderator", default: false, null: false
     t.index ["panel_id"], name: "index_panel_panelists_on_panel_id"
     t.index ["panelist_id"], name: "index_panel_panelists_on_panelist_id"
   end
@@ -90,7 +91,6 @@ ActiveRecord::Schema.define(version: 2021_12_02_021121) do
     t.string "company"
     t.string "bio"
     t.string "headshot_src"
-    t.string "is_moderator", default: "f", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
