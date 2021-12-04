@@ -2,6 +2,7 @@ require 'faker'
 
 puts "=== SEEDING START ==="
 # Create Event Sponsor Levels
+puts "Creating Sponsor Levels"
 sponsor_levels = [
   EventSponsorLevel.create(name: "Partners", rank: 0), 
   EventSponsorLevel.create(name: "Creative Partners", rank: 1), 
@@ -12,6 +13,7 @@ sponsor_levels = [
 ]
 
 # Create Sponsors
+puts "Creating Sponsors"
 sponsors = []
 50.times do |i|
   sponsor = Sponsor.create(name: Faker::Company.name, logo_src: "https://joedietrich.dev/imagestore/logos/logoipsum-logo-#{i + 1}.svg")
@@ -19,6 +21,7 @@ sponsors = []
 end
 
 # Create Panelists
+puts "Creating Panelists"
 panelists = []
 50.times do |i|
   panelist = Panelist.create(
@@ -32,7 +35,8 @@ panelists = []
 end
 
 # Create Events
-5.times do
+puts "Creating Events"
+5.times do |i|
   title = "#{Faker::Number.between(from: 2021, to: 2025)} #{Faker::Nation.nationality.singularize} #{Faker::Hobby.activity} Show"
   event = Event.create(
     title: title,
@@ -46,6 +50,7 @@ end
   )
 
   # Create Event Sponsors
+  puts "Adding Sponsors to Event #{i}"
   EventSponsor.create(
     event_sponsor_level: sponsor_levels[0],
     order: 0,
@@ -76,6 +81,7 @@ end
   end
 
   # Create Honorees
+  puts "Adding Honorees to Event #{i}"
   rand(1..4).times do |i|
     Honoree.create(
       honor: "#{Faker::Commerce.material} Award", 
@@ -88,6 +94,7 @@ end
   end
 
   # Create Hosts
+  puts "Adding Hosts to Event #{i}"
   rand(1..2).times do |i|
     Host.create(
       name: Faker::Name.name, 
@@ -98,6 +105,7 @@ end
   end
 
   # Create Panels
+  puts "Adding Panels to Event #{i}"
   rand(2..8).times do |i|
     panel = Panel.create(
       title: Faker::Marketing.buzzwords,
@@ -113,7 +121,5 @@ end
 
 
 end 
-
-# TO DO: Panels (in Event + panelPanelists + panelSponsors) / 
 
 puts "=== SEEDING ENDED ==="
