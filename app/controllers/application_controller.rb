@@ -83,13 +83,46 @@ class ApplicationController < Sinatra::Base
   end
 
   get "/panels/:id" do
-    Panel.find(params[:id]).to_json(
+    panel = Panel.includes(:panel_panelists, :panelists, :event).find(params[:id])
+    
+    res = {
+      id: panel.id,
+      title: panel.title,
+      description: panel.description,
+      time: panel.time,
+      event_id: panel.event.id,
+      event_title: panel.event.title,
+      panelists: panel.panel_panelists.map do |link|
+        {
+          id: link.panelist.id,
+          name: link.panelist.name,
+          title: link.panelist.title,
+          company: link.panelist.company,
+          headshot_src: link.panelist.headshot_src,
+          is_moderator: link.is_moderator
+        }
+      end,
+      created_at: panel.created_at,
+      updated_at: panel.updated_at
+    }.to_json
+  end
+
+  get "/sponsors" do
+    Sponsor.all.to_json
+  end
+
+  get "/sponsors/:id" do
+    Sponsor.find(params[:id]).to_json(
       include: [
-        event: {only: [:id, :title]},
-        panelists: {only: [:id, :name]}
-      ],
-      except: :event_id
-    )
+        event_sponsors: {
+          only: [:id, :order],
+          include: [
+            event_sponsor_level: {only: [:id, :name, :rank]},
+            event: {only: [:id, :title]}
+          ]
+        },
+        panels: {only: [:id, :title]}
+      ])
   end
 
 end
