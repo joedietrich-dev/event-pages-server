@@ -6,4 +6,10 @@ class Panel < ActiveRecord::Base
   has_many :sponsors, through: :panel_sponsors
   
   validates :title, presence: true
+
+#  scope :moderated_by, -> { joins(:panel_panelists).where(panel_panelists: {is_moderator: true})}
+
+  def moderators
+    self.panelists.joins(:panel_panelists).where('is_moderator = ?', true)
+  end
 end
