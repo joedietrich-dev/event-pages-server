@@ -121,7 +121,7 @@ class ApplicationController < Sinatra::Base
             event: {only: [:id, :title]}
           ]
         },
-        panels: {only: [:id, :title]}
+        panels: {only: [:id, :title], include: [event: {only: [:id, :title]}]}
       ])
   end
 
