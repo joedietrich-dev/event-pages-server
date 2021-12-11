@@ -125,4 +125,17 @@ class ApplicationController < Sinatra::Base
       ])
   end
 
+  patch "/sponsors/:id" do
+    sponsor = Sponsor.find(params[:id])
+    sponsor.update(
+      name: params[:name],
+      logo_src: params[:logo_src]
+    )
+    sponsor.to_json
+  end
+
+  delete "/sponsors/:id" do
+    sponsor = Sponsor.find(params[:id])
+    sponsor.destroy
+  end
 end
