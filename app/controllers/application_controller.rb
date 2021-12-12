@@ -44,11 +44,27 @@ class ApplicationController < Sinatra::Base
     Host.all.to_json
   end
 
+  post "/hosts" do
+    host = Host.create(name: params[:name], bio: params[:bio], headshot_src: params[:headshot_src])
+    host.to_jsonS
+  end
+
   get "/hosts/:id" do
     Host.find(params[:id]).to_json(
       include: [event: {only: [:id, :title]}],
       except: :event_id
     )
+  end
+
+  patch "/hosts/:id" do
+    host = Host.find(params[:id])
+    host.update(name: params[:name], bio: params[:bio], headshot_src: params[:headshot_src])
+    host.to_json
+  end
+
+  delete "/hosts/:id" do
+    host = Host.find(params[:id])
+    host.destroy
   end
 
   get "/panelists" do
@@ -109,6 +125,11 @@ class ApplicationController < Sinatra::Base
 
   get "/sponsors" do
     Sponsor.all.to_json
+  end
+
+  post "/sponsors" do
+    sponsor = Sponsor.create(name: params[:name], logo_src: params[:logo_src])
+    sponsor.to_json
   end
 
   get "/sponsors/:id" do
