@@ -46,7 +46,7 @@ class ApplicationController < Sinatra::Base
 
   post "/hosts" do
     host = Host.create(name: params[:name], bio: params[:bio], headshot_src: params[:headshot_src])
-    host.to_jsonS
+    host.to_json
   end
 
   get "/hosts/:id" do
