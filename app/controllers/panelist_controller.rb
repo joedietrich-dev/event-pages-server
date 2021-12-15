@@ -19,6 +19,7 @@ class PanelistController < Sinatra::Base
   get "/panelists/:id" do
     panelist = Panelist.includes(:panel_panelists, panels: [:event]).find(params[:id])
     res = {
+      id: panelist.id,
       name: panelist.name,
       title: panelist.title,
       company: panelist.company,

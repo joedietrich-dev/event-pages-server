@@ -11,17 +11,34 @@ class SponsorController < Sinatra::Base
   end
 
   get "/sponsors/:id" do
-    Sponsor.find(params[:id]).to_json(
-      include: [
-        event_sponsors: {
-          only: [:id, :order],
-          include: [
-            event_sponsor_level: {only: [:id, :name, :rank]},
-            event: {only: [:id, :title]}
-          ]
-        },
-        panels: {only: [:id, :title], include: [event: {only: [:id, :title]}]}
-      ])
+    sponsor = Sponsor.includes(:event_sponsors, :event_sponsor_levels, :events, panels: [:event]).find(params[:id])
+    res = {
+      id: sponsor.id,
+      name: sponsor.name,
+      logo_src: sponsor.logo_src,
+      sponsored_events: sponsor.event_sponsors.map do |link|
+        {
+          id: link.event.id,
+          title: link.event.title,
+          event_sponsor_level: { 
+            id: link.event_sponsor_level.id, 
+            rank: link.event_sponsor_level.rank, 
+            name: link.event_sponsor_level.name },
+          order: link.order
+        }
+      end,
+      panels: sponsor.panels.map do |panel|
+        {
+          id: panel.id,
+          title: panel.title,
+          event: panel.event.title,
+          event_id: panel.event.id,
+        }
+      end,
+      created_at: sponsor.created_at,
+      updated_at: sponsor.updated_at
+    }
+    res.to_json
   end
 
   patch "/sponsors/:id" do

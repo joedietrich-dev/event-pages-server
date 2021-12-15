@@ -9,10 +9,10 @@ end
 
 use Rack::JSONBodyParser
 
+use EventController
+use HonoreeController
+use HostController
+use PanelController
+use PanelistController
+use SponsorController
 run ApplicationController
-run EventController
-run HonoreeController
-run HostController
-run PanelController
-run PanelistController
-run SponsorController
