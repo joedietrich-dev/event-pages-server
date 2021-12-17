@@ -57,6 +57,21 @@ class PanelController < Sinatra::Base
     panel.to_json
   end
 
+  patch "/panels/:id/panelists/:panelist_id" do
+    panel = Panel.includes(:panel_panelists).find(params[:id])
+    panel_panelist = panel.panel_panelists.where(panelist_id: params[:panelist_id]).take
+    panel_panelist.update(is_moderator: !panel_panelist.is_moderator)
+    res = {
+      id: panel_panelist.panelist_id, is_moderator: panel_panelist.is_moderator
+    }.to_json
+  end
+  
+  delete "/panels/:id/panelists/:panelist_id" do
+    panel = Panel.includes(:panel_panelists).find(params[:id])
+    panel_panelist = panel.panel_panelists.where(panelist_id: params[:panelist_id]).take
+    panel_panelist.destroy
+  end
+
   delete "/panels/:id" do
     panel = Panel.find(params[:id])
     panel.destroy
