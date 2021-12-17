@@ -5,8 +5,17 @@ class PanelController < Sinatra::Base
     Panel.all.to_json
   end
 
+  post "/panels" do
+    panel = Panel.create(
+      title: params[:title],
+      description: params[:description],
+      time: params[:time],
+      event_id: params[:event_id])
+    panel.to_json
+  end
+
   get "/panels/:id" do
-    panel = Panel.includes(:panel_panelists, :panelists, :event).find(params[:id])
+    panel = Panel.includes(:panel_panelists, :panelists, :sponsors, :event).find(params[:id])
     
     res = {
       id: panel.id,
@@ -25,8 +34,31 @@ class PanelController < Sinatra::Base
           is_moderator: link.is_moderator
         }
       end,
+      sponsors: panel.sponsors.map do |sponsor|
+        {
+          id: sponsor.id,
+          name: sponsor.name,
+          logo_src: sponsor.logo_src
+        }
+      end,
       created_at: panel.created_at,
       updated_at: panel.updated_at
     }.to_json
+  end
+
+  patch "/panels/:id" do 
+    panel = Panel.find(params[:id])
+    panel.update(
+      title: params[:title],
+      description: params[:description],
+      time: params[:time],
+      event_id: params[:event_id]
+    )
+    panel.to_json
+  end
+
+  delete "/panels/:id" do
+    panel = Panel.find(params[:id])
+    panel.destroy
   end
 end
