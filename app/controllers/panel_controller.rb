@@ -63,7 +63,7 @@ class PanelController < Sinatra::Base
   end
 
   post "/panels/:id/panelists/:panelist_id" do
-    panel = Panel.includes(:panel_panelists, :panelists).find(params[:id])
+    panel = Panel.find(params[:id])
       panel_panelist = PanelPanelist.create(panelist_id: params[:panelist_id], panel_id: params[:panel_id])
       return res = {
         id: panel_panelist.panelist.id,
@@ -76,7 +76,7 @@ class PanelController < Sinatra::Base
   end
 
   patch "/panels/:id/panelists/:panelist_id" do
-    panel = Panel.includes(:panel_panelists).find(params[:id])
+    panel = Panel.find(params[:id])
     panel_panelist = panel.panel_panelists.where(panelist_id: params[:panelist_id]).take
     panel_panelist.update(is_moderator: !panel_panelist.is_moderator)
     res = {
@@ -85,19 +85,18 @@ class PanelController < Sinatra::Base
   end
   
   delete "/panels/:id/panelists/:panelist_id" do
-    panel = Panel.includes(:panel_panelists).find(params[:id])
+    panel = Panel.find(params[:id])
     panel_panelist = panel.panel_panelists.where(panelist_id: params[:panelist_id]).take
     panel_panelist.destroy
   end
 
   post "/panels/:id/sponsors/:sponsor_id" do
-    panel = Panel.includes(:panel_sponsors, :sponsors).find(params[:id])
-      panel_sponsor = PanelSponsor.create(sponsor_id: params[:sponsor_id], panel_id: params[:panel_id])
-      return Sponsor.find(panel_sponsor.sponsor_id).to_json
+    panel_sponsor = PanelSponsor.create(sponsor_id: params[:sponsor_id], panel_id: params[:id])
+    Sponsor.find(panel_sponsor.sponsor_id).to_json
   end
   
   delete "/panels/:id/sponsors/:sponsor_id" do
-    panel = Panel.includes(:panel_sponsors).find(params[:id])
+    panel = Panel.find(params[:id])
     panel_sponsors = panel.panel_sponsors.where(sponsor_id: params[:sponsor_id]).take
     panel_sponsors.destroy
   end

@@ -4,6 +4,10 @@ class SponsorController < Sinatra::Base
   get "/sponsors" do
     Sponsor.all.to_json
   end
+    
+  get "/event_sponsor_levels" do
+    EventSponsorLevel.all.to_json
+  end
 
   post "/sponsors" do
     sponsor = Sponsor.create(name: params[:name], logo_src: params[:logo_src])
