@@ -6,7 +6,7 @@ class EventController < Sinatra::Base
   end
   
   post "/events" do
-    Event.create(
+    event = Event.create(
       title: params[:title],
       description: params[:description],
       short_description: params[:short_description],
@@ -16,6 +16,7 @@ class EventController < Sinatra::Base
       view_link: params[:view_link],
       date: params[:date],
     )
+    event.to_json
   end
 
   get "/events/:id" do
