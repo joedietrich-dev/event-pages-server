@@ -28,7 +28,8 @@ class SponsorController < Sinatra::Base
             id: link.event_sponsor_level.id, 
             rank: link.event_sponsor_level.rank, 
             name: link.event_sponsor_level.name },
-          order: link.order
+          order: link.order,
+          event_sponsor_id: link.id
         }
       end,
       panels: sponsor.panels.map do |panel|
