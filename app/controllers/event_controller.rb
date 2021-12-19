@@ -6,7 +6,7 @@ class EventController < Sinatra::Base
   end
   
   post "/events" do
-    event.create(
+    Event.create(
       title: params[:title],
       description: params[:description],
       short_description: params[:short_description],
