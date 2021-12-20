@@ -8,8 +8,4 @@ class Event < ActiveRecord::Base
   has_many :event_sponsor_levels, through: :event_sponsors
 
   validates :title, presence: true
-
-  def panelists
-    []
-  end
 end
